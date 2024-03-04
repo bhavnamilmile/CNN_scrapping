@@ -1,7 +1,6 @@
 
 
 import requests
-
 from blm_scrapper import CNNScraper
 
 
@@ -106,8 +105,7 @@ def process_csv():
             continue
         date_file = article_data[1]
         headline = article_data[3]
-
-        print(date_file)
+        
         date_obj = datetime.strptime(date_file, '%m-%d-%Y')
         date = date_obj.strftime('%B %Y')
 
@@ -118,19 +116,19 @@ def process_csv():
             os.makedirs(new_output_dir, exist_ok=True)    
 
         output_file = os.path.join(new_output_dir, headline+" "+date_file+".txt" )
-
-        article_data[-2] = new_output_dir
         print(output_file)
+        article_data[-2] = new_output_dir
+        
 
         with open(output_file, "w") as f:
             f.write(article_body)
 
         data_all.append(article_data)   
 
-        print(article_data)
+        #print(article_data)
 
 
-        # print(data_all)
+        print(data_all)
 
         CNNScraper.save_to_csv(data_all, os.path.join(output_directory, keyword+".csv"))  
 

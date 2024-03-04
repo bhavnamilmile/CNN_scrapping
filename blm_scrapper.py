@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from datetime import datetime
+import re
 import csv
 import os
 
@@ -247,16 +248,18 @@ class CNNScraper(BLMContentScraper):
 
     def fetch_single_article(self, article, url):
         data = super().fetch_single_article(article)
-        print(data)
+        #print(data)
         #Updated 7:59 PM EST, Wed November 26, 2014
-    
+        print(data)
+        clean_headline= re.sub(r'[^a-zA-Z0-9\s]', '', data[3])
+               
         date_str = article.select_one(self.date_selector).text.strip()if article.select_one(self.date_selector) else 'DATE_NOT_FOUND'
 
         try:
             # Removing the "Updated " prefix and extracting just the date part
             date_str = " ".join(date_str.replace("Updated ", "").split(", ")[1:])
 
-            print(date_str)
+            #print(date_str)
             # Parse the datetime string
             date_time_obj = datetime.strptime(date_str, self.date_format)
 
@@ -266,6 +269,8 @@ class CNNScraper(BLMContentScraper):
 
         data[1] = date_str
         data[-1] = url
+        data[3]=clean_headline
+        print(data)
         return data
 
 
