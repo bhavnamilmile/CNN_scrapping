@@ -140,8 +140,11 @@ class NBCScraper(BLMContentScraper):
 
     def fetch_single_article(self, article, url):
         data = super().fetch_single_article(article)
+        print(data)
+        clean_headline= re.sub(r'[^a-zA-Z0-9\s]', '', data[3])
+        
         date_str = article.select_one(self.date_selector).attrs['datetime'] if article.select_one(self.date_selector) else 'DATE_NOT_FOUND'
-
+        
         try:
             # Parse the datetime string
             date_time_obj = datetime.strptime(date_str, '%Y-%m-%dT%H:%M:%S.%fZ')
@@ -152,6 +155,7 @@ class NBCScraper(BLMContentScraper):
 
         data[1] = date_str
         data[-1] = url
+        data[3]=clean_headline
         return data
     
 
@@ -195,6 +199,9 @@ class CBSScraper(BLMContentScraper):
 
     def fetch_single_article(self, article, url):
         data = super().fetch_single_article(article)
+        print(data)
+        clean_headline= re.sub(r'[^a-zA-Z0-9\s]', '', data[3])
+
         date_str = article.select_one(self.date_selector).attrs['datetime'] if article.select_one(self.date_selector) else 'DATE_NOT_FOUND'
 
         try:
@@ -207,6 +214,7 @@ class CBSScraper(BLMContentScraper):
 
         data[1] = date_str
         data[-1] = url
+        data[3]= clean_headline
         return data
 
 
